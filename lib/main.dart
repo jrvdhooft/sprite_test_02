@@ -51,7 +51,11 @@ class MyGame extends FlameGame with HasTappables {
     double x_offset = screenWidth / 2;
     double y_offset = screenHeight / 2;
     // setup background2
-
+    background
+      ..sprite = await loadSprite( 'border2.png')
+      ..anchor = Anchor.center
+      ..size = Vector2((screenWidth/2)*1.18, screenHeight*0.93)
+      ..position = Vector2(-3+screenWidth / 2, screenHeight / 2);
     shuffleButton
       ..sprite = await loadSprite(dirmy + 'shuffle.png')
       ..size = buttonSize
@@ -64,10 +68,7 @@ class MyGame extends FlameGame with HasTappables {
       ..sprite = await loadSprite(dirmy + 'numbers.png')
       ..size = buttonSize
       ..position = Vector2(screenWidth - 3 * buttonSize[0] - 10, screenHeight - buttonSize[1] - 10);
-    background
-      ..sprite = await loadSprite(dirmy + 'k2.png')
-      ..size = Vector2(screenWidth, screenHeight)
-      ..position = Vector2(screenWidth / 2, screenHeight / 2);
+
 
     String na = "0";
     for (int i = 0; i < 23; i++) {
@@ -91,8 +92,12 @@ class MyGame extends FlameGame with HasTappables {
       playBoard.playFields[i].free = false;
     }
 
+
     playBoard.recalcPosition(triangleList, squareList, numberList, screenWidth, screenHeight);
     playBoard.recalcSize(triangleList, squareList, numberList, screenWidth, screenHeight);
+
+    background.size = Vector2(triangleList[0].size.x*4.33, triangleList[0].size.y*4.38);
+    add(background);
     for (int i = 0; i < 23; i++) {
       numberList[i].position.x = numberList[i].x_new;
       numberList[i].position.y = numberList[i].y_new;
@@ -104,7 +109,7 @@ class MyGame extends FlameGame with HasTappables {
         remove(numberList[i]);
       }
     }
-    add(background);
+
     add(shuffleButton);
     add(solveButton);
     add(displayNumbersButton);
@@ -137,19 +142,23 @@ class MyGame extends FlameGame with HasTappables {
       screenWidth = canvasSize.x;
       screenHeight = canvasSize.y;
       // print("scr($screenWidth,$screenHeight)");
+
       redrawScreen();
     }
   }
 
   void redrawScreen() {
     if (initDone == true) {
-      background.size = Vector2(screenWidth, screenHeight);
+      //background.size = Vector2(screenWidth, screenHeight);
+
       shuffleButton.position = Vector2(screenWidth - buttonSize[0] - 10, screenHeight - buttonSize[1] - 10);
       solveButton.position = Vector2(screenWidth - 2 * buttonSize[0] - 10, screenHeight - buttonSize[1] - 10);
       displayNumbersButton.position = Vector2(screenWidth - 3 * buttonSize[0] - 10, screenHeight - buttonSize[1] - 10);
 
       playBoard.recalcPosition(triangleList, squareList, numberList, screenWidth, screenHeight);
       playBoard.recalcSize(triangleList, squareList, numberList, screenWidth, screenHeight);
+
+      background.position = Vector2(-3+screenWidth / 2, screenHeight / 2);
       for (int i = 0; i < 23; i++) {
         numberList[i].position.x = numberList[i].x_new;
         numberList[i].position.y = numberList[i].y_new;
@@ -161,6 +170,7 @@ class MyGame extends FlameGame with HasTappables {
           remove(numberList[i]);
         }
       }
+      background.size = Vector2(triangleList[0].size.x*4.33, triangleList[0].size.y*4.38);
       add(shuffleButton);
       add(solveButton);
       add(displayNumbersButton);
